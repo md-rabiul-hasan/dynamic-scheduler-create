@@ -1,0 +1,26 @@
+service: aws-scheduler
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - events:PutRule
+            - events:PutTargets
+            - events:PutPermission
+            - lambda:InvokeFunction
+            - lambda:AddPermission
+            - events:InvokeLambdaFunction
+          Resource: "*"
+
+functions:
+  createScheduler:
+    handler: index.handler
+  hello:
+    handler: hello.handler
+  world:
+    handler: world.handler

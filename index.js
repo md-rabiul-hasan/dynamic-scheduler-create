@@ -24,6 +24,10 @@ module.exports.handler = async (event) => {
         {
           Arn: "arn:aws:lambda:us-east-1:947677187707:function:aws-scheduler-dev-world",
           Id: 'NewsAsset1',
+          Input: JSON.stringify({
+            schedulerInput: 'Your scheduler input value for NewsAsset1',
+            // Add any additional parameters here
+          }),
         },
       ],
     };
@@ -68,6 +72,10 @@ module.exports.handler = async (event) => {
         {
           Arn: "arn:aws:lambda:us-east-1:947677187707:function:aws-scheduler-dev-world",
           Id: 'NewsAsset2',
+          Input: JSON.stringify({
+            schedulerInput: 'Your scheduler input value for NewsAsset2',
+            // Add any additional parameters here
+          }),
         },
       ],
     };

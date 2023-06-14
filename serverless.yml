@@ -4,6 +4,10 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: nodejs14.x
+  environment:
+    REGION: us-east-1
+    STAGE: ${opt:stage, 'dev'}
+    SERVICE: aws-scheduler
   iam:
     role:
       statements:

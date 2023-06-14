@@ -1,6 +1,13 @@
 const AWS = require('aws-sdk');
 
+
 module.exports.handler = async (event) => {
+  const sts = new AWS.STS();
+
+  const { Account: accountId } = await sts.getCallerIdentity().promise();
+
+  const targetedLambdaFunctionArn = `arn:aws:lambda:${process.env.REGION}:${accountId}:function:${process.env.SERVICE}-${process.env.STAGE}-world`;
+
   // Create an instance of the AWS SDK
   const cloudwatchEvents = new AWS.CloudWatchEvents();
   const lambda = new AWS.Lambda();
@@ -22,7 +29,7 @@ module.exports.handler = async (event) => {
       Rule: 'NewsAsset1',
       Targets: [
         {
-          Arn: "arn:aws:lambda:us-east-1:947677187707:function:aws-scheduler-dev-world",
+          Arn: `${targetedLambdaFunctionArn}`,
           Id: 'NewsAsset1',
           Input: JSON.stringify({
             schedulerInput: 'Your scheduler input value for NewsAsset1',
@@ -39,11 +46,11 @@ module.exports.handler = async (event) => {
     console.log('Scheduler created for NewsAsset1:', ruleResponse, targetResponse);
 
     // Retrieve the ARN of the Lambda function
-    const lambdaFunctionArn = "arn:aws:lambda:us-east-1:947677187707:function:aws-scheduler-dev-world";
+  
 
     // Define the permission parameters for NewsAsset1
     const permissionParams = {
-      FunctionName: lambdaFunctionArn,
+      FunctionName: targetedLambdaFunctionArn,
       StatementId: 'NewsAsset1',
       Action: 'lambda:InvokeFunction',
       Principal: 'events.amazonaws.com',
@@ -70,7 +77,7 @@ module.exports.handler = async (event) => {
       Rule: 'NewsAsset2',
       Targets: [
         {
-          Arn: "arn:aws:lambda:us-east-1:947677187707:function:aws-scheduler-dev-world",
+          Arn: `${targetedLambdaFunctionArn}`,
           Id: 'NewsAsset2',
           Input: JSON.stringify({
             schedulerInput: 'Your scheduler input value for NewsAsset2',
@@ -87,11 +94,9 @@ module.exports.handler = async (event) => {
     console.log('Scheduler created for NewsAsset2:', ruleResponse2, targetResponse2);
 
     // Retrieve the ARN of the Lambda function
-    const lambdaFunctionArn2 = "arn:aws:lambda:us-east-1:947677187707:function:aws-scheduler-dev-world";
-
     // Define the permission parameters for NewsAsset2
     const permissionParams2 = {
-      FunctionName: lambdaFunctionArn2,
+      FunctionName: targetedLambdaFunctionArn,
       StatementId: 'NewsAsset2',
       Action: 'lambda:InvokeFunction',
       Principal: 'events.amazonaws.com',

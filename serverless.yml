@@ -28,3 +28,11 @@ functions:
     handler: hello.handler
   world:
     handler: world.handler
+  functionOne:
+    handler: functionOne.handler
+    events:
+      - http:
+          path: function-one
+          method: get
+  functionTwo:
+    handler: functionTwo.handler
